@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { remult } from '../src/common';
 import { Task } from '../src/shared/Task';
 
+import { HiddenLabel } from '../src/components/common';
+
 const taskRepo = remult.repo(Task);
 
 const Home: NextPage = () => {
@@ -36,18 +38,20 @@ const Home: NextPage = () => {
 
   return (
     <div>
+      <label htmlFor='hide-completed'>완료된 항목 숨기기</label>
       <input
         id='hide-completed'
         type='checkbox'
         checked={hideCompleted}
         onChange={() => setHideCompleted(!hideCompleted)}
       />
-      <label htmlFor='hide-completed'>완료된 항목 숨기기</label>
       <ul>
         {tasks.map(({ id, title, completed }) =>
           <li key={id}>
+            <HiddenLabel htmlFor={id}>{title}</HiddenLabel>
             <input id={id} type="checkbox" checked={completed} />
-            <label htmlFor={id}>{title}</label>
+            <HiddenLabel htmlFor={id}>{title}</HiddenLabel>
+            <input id={`title-${id}`} value={title} />
           </li>
         )}
       </ul>
