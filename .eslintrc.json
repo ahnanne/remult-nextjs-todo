@@ -1,6 +1,12 @@
 {
   "extends": "next/core-web-vitals",
+  "plugins": ["react"],
   "rules": {
-    "semi": "warn"
+    "semi": "warn",
+    "space-in-parens": ["error", "never"],
+    "indent": ["error", 2],
+    "react/jsx-max-props-per-line": ["error", { "when": "always" }],
+    "react/jsx-first-prop-new-line": ["error", "multiline"],
+    "react/jsx-closing-bracket-location": ["error", "line-aligned"]
   }
 }
