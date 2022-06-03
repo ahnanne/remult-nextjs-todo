@@ -15,7 +15,7 @@ const Home: NextPage = () => {
     const fetchTasks = async (hideCompleted: boolean) => {
       try {
         // https://remult.dev/docs/ref_repository.html#find
-        const data = await taskRepo.find( {
+        const data = await taskRepo.find({
           limit: 20, // 페이징
           orderBy: { // 정렬
             completed: 'asc'
@@ -34,6 +34,19 @@ const Home: NextPage = () => {
     fetchTasks(hideCompleted);
   }, [hideCompleted]);
 
+  const updateTask = (v: Partial<Task>, targetTask: Task) => {
+    setTasks(tasks.map(task => {
+      if (task === targetTask) {
+        return {
+          ...targetTask,
+          ...v
+        };
+      } else {
+        return task;
+      }
+    }));
+  };
+
   console.log(tasks);
 
   return (
@@ -46,12 +59,21 @@ const Home: NextPage = () => {
         onChange={() => setHideCompleted(!hideCompleted)}
       />
       <ul>
-        {tasks.map(({ id, title, completed }) =>
-          <li key={id}>
-            <HiddenLabel htmlFor={id}>{title}</HiddenLabel>
-            <input id={id} type="checkbox" checked={completed} />
-            <HiddenLabel htmlFor={id}>{title}</HiddenLabel>
-            <input id={`title-${id}`} value={title} />
+        {tasks.map((task) =>
+          <li key={task.id}>
+            <HiddenLabel htmlFor={task.id}>{task.title}</HiddenLabel>
+            <input
+              id={task.id}
+              type="checkbox"
+              checked={task.completed}
+              onChange={(e) => updateTask({ completed: e.target.checked }, task)}
+            />
+            <HiddenLabel htmlFor={task.id}>{task.title}</HiddenLabel>
+            <input
+              id={`title-${task.id}`}
+              value={task.title}
+              onChange={(e) => updateTask({ title: e.target.value }, task)}
+            />
           </li>
         )}
       </ul>
