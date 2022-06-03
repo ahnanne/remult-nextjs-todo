@@ -8,11 +8,11 @@ import { Entity, Fields } from 'remult';
 })
 export class Task {
   @Fields.uuid()
-  id!: string; // 옵셔널
+    id!: string; // 옵셔널
 
   @Fields.string()
-  title = '';
+    title = '';
 
   @Fields.boolean()
-  completed = false;
+    completed = false;
 }
