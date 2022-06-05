@@ -51,15 +51,27 @@ const Home: NextPage = () => {
     }));
   };
 
-  const updateTask = async (task: Task) => {
+  const updateTask = async (targetTask: Task) => {
     try {
-      await taskRepo.save(task); // update database
+      const updatedTask = await taskRepo.save(targetTask); // update database
+      setTasks(tasks.map((task) => task === targetTask ? updatedTask : task));
     } catch (e) {
       handleError(e);
     }
   };
 
-  console.log(tasks);
+  const addTask = () => {
+    setTasks([...tasks, new Task()]);
+  };
+
+  const deleteTask = async (targetTask: Task) => {
+    try {
+      await taskRepo.delete(targetTask);
+      setTasks(tasks.filter((task) => task !== targetTask));
+    } catch (e) {
+      handleError(e);
+    }
+  };
 
   return (
     <div>
@@ -94,9 +106,21 @@ const Home: NextPage = () => {
             >
               수정
             </button>
+            <button
+              type='button'
+              onClick={() => deleteTask(task)}
+            >
+              삭제
+            </button>
           </React.Fragment>
         )}
       </ul>
+      <button
+        type='button'
+        onClick={addTask}
+      >
+        할 일 추가
+      </button>
     </div>
   );
 };

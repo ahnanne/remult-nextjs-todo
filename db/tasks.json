@@ -1,27 +1,12 @@
 [
   {
-    "id": "3063e364-b3f0-429c-be1d-ca5aa2f63cd2",
-    "title": "아침먹기?",
+    "id": "ebe79a71-96a9-4b2e-b3f8-c92fe06fe840",
+    "title": "t1",
     "completed": false
   },
   {
-    "id": "f99c01ba-7587-4678-9b57-2a1083619174",
-    "title": "점심먹기",
-    "completed": true
-  },
-  {
-    "id": "26d1addd-f5e4-4d44-8661-33ec8caa0cbc",
-    "title": "저녁먹기",
-    "completed": false
-  },
-  {
-    "id": "bb6bf689-9d3a-4d2b-af38-2d6e9395d4d5",
-    "title": "놀기",
-    "completed": false
-  },
-  {
-    "id": "06641378-5981-43c5-85ae-b7694a197b29",
-    "title": "취침",
+    "id": "3f577f7c-f972-4307-9414-63fd70d3d8fa",
+    "title": "t2",
     "completed": true
   }
 ]
