@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
+import { ErrorInfo } from 'remult';
 import { remult } from '../src/common';
 import { Task } from '../src/shared/Task';
 
@@ -8,11 +9,12 @@ import { HiddenLabel } from '../src/components/common';
 const taskRepo = remult.repo(Task);
 
 const Home: NextPage = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<(Task & { error?: ErrorInfo<Task> })[]>([]);
   const [hideCompleted, setHideCompleted] = useState(false);
   
-  const handleError = (e: unknown) => {
-    window.alert('목록을 불러오는 중 문제가 발생했습니다.');
+  const handleError = (e: any) => {
+    const errorMessage = e.message || '목록을 불러오는 중 문제가 발생했습니다.';
+    window.alert(errorMessage);
     console.error(e);
   };
 
@@ -55,8 +57,9 @@ const Home: NextPage = () => {
     try {
       const updatedTask = await taskRepo.save(targetTask); // update database
       setTasks(tasks.map((task) => task === targetTask ? updatedTask : task));
-    } catch (e) {
+    } catch (e: any) {
       handleError(e);
+      setTasks(tasks.map((task) => task === targetTask ? { ...task, error: e } : task));
     }
   };
 
@@ -83,36 +86,41 @@ const Home: NextPage = () => {
         onChange={() => setHideCompleted(!hideCompleted)}
       />
       <ul>
-        {tasks.map((task) =>
-          <React.Fragment key={task.id}>
-            <li>
-              <HiddenLabel htmlFor={task.id}>{task.title}</HiddenLabel>
-              <input
-                id={task.id}
-                type="checkbox"
-                checked={task.completed}
-                onChange={(e) => handleTaskChange({ completed: e.target.checked }, task)}
-              />
-              <HiddenLabel htmlFor={task.id}>{task.title}</HiddenLabel>
-              <input
-                id={`title-${task.id}`}
-                value={task.title}
-                onChange={(e) => handleTaskChange({ title: e.target.value }, task)}
-              />
-            </li>
-            <button
-              type='button'
-              onClick={() => updateTask(task)}
-            >
+        {tasks.map((task, idx) => {
+          console.log(task);
+          return (
+            <React.Fragment key={task.id || idx}>
+              <li>
+                <HiddenLabel htmlFor={task.id}>{task.title}</HiddenLabel>
+                <input
+                  id={task.id}
+                  type="checkbox"
+                  checked={task.completed}
+                  onChange={(e) => handleTaskChange({ completed: e.target.checked }, task)}
+                />
+                <HiddenLabel htmlFor={task.id}>{task.title}</HiddenLabel>
+                <input
+                  id={`title-${task.id}`}
+                  value={task.title}
+                  onChange={(e) => handleTaskChange({ title: e.target.value }, task)}
+                />
+                {task.error?.modelState?.title}
+              </li>
+              <button
+                type='button'
+                onClick={() => updateTask(task)}
+              >
               수정
-            </button>
-            <button
-              type='button'
-              onClick={() => deleteTask(task)}
-            >
+              </button>
+              <button
+                type='button'
+                onClick={() => deleteTask(task)}
+              >
               삭제
-            </button>
-          </React.Fragment>
+              </button>
+            </React.Fragment>
+          );
+        }
         )}
       </ul>
       <button
