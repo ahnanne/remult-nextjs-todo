@@ -11,34 +11,34 @@ const taskRepo = remult.repo(Task);
 const Home: NextPage = () => {
   const [tasks, setTasks] = useState<(Task & { error?: ErrorInfo<Task> })[]>([]);
   const [hideCompleted, setHideCompleted] = useState(false);
-  
+
+  const fetchTasks = async (hideCompleted: boolean) => {
+    try {
+      // https://remult.dev/docs/ref_repository.html#find
+      const data = await taskRepo.find({
+        limit: 20, // 페이징
+        orderBy: { // 정렬
+          completed: 'asc'
+        },
+        where: { // 필터링
+          completed: hideCompleted ? false : undefined
+        }
+      });
+      setTasks(data);
+    } catch (e) {
+      handleError(e);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks(hideCompleted);
+  }, [hideCompleted]);
+
   const handleError = (e: any) => {
     const errorMessage = e.message || '목록을 불러오는 중 문제가 발생했습니다.';
     window.alert(errorMessage);
     console.error(e);
   };
-
-  useEffect(() => {
-    const fetchTasks = async (hideCompleted: boolean) => {
-      try {
-        // https://remult.dev/docs/ref_repository.html#find
-        const data = await taskRepo.find({
-          limit: 20, // 페이징
-          orderBy: { // 정렬
-            completed: 'asc'
-          },
-          where: { // 필터링
-            completed: hideCompleted ? false : undefined
-          }
-        });
-        setTasks(data);
-      } catch (e) {
-        handleError(e);
-      }
-    };
-
-    fetchTasks(hideCompleted);
-  }, [hideCompleted]);
 
   const handleTaskChange = (v: Partial<Task>, targetTask: Task) => {
     setTasks(tasks.map(task => {
@@ -76,8 +76,30 @@ const Home: NextPage = () => {
     }
   };
 
+  const setAll = async (completed: boolean) => {
+    for (const task of await taskRepo.find()) {
+      await taskRepo.save({ ...task, completed });
+    }
+
+    await fetchTasks(hideCompleted);
+  };
+
   return (
     <div>
+      <div>
+        <button
+          type='button'
+          onClick={() => setAll(true)}
+        >
+          전체 완료 표시하기
+        </button>
+        <button
+          type='button'
+          onClick={() => setAll(false)}
+        >
+          전체 완료 표시 해제하기
+        </button>
+      </div>
       <label htmlFor='hide-completed'>완료된 항목 숨기기</label>
       <input
         id='hide-completed'
