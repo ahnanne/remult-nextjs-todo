@@ -1,9 +1,13 @@
+// 서버 api 모듈
+
 import { remultExpress } from 'remult/remult-express';
 import { Task } from '../shared/Task';
+import { TasksController } from '../shared/TasksController';
 
 export const api = remultExpress({
   bodyParser: false, // 파싱은 next.js가 해주기 때문에 false로 설정
   entities: [Task],
+  controllers: [TasksController],
   // initApi 콜백 함수는 데이터베이스 커넥션이 이루어지고
   // 서버가 초기화 동작을 수행할 준비가 되었을 때 딱 한번 호출된다.
   initApi: async remult => {
