@@ -2,11 +2,16 @@
   {
     "id": "ebe79a71-96a9-4b2e-b3f8-c92fe06fe840",
     "title": "t1",
-    "completed": false
+    "completed": true
   },
   {
     "id": "3f577f7c-f972-4307-9414-63fd70d3d8fa",
     "title": "t2",
-    "completed": false
+    "completed": true
+  },
+  {
+    "id": "b04aa02a-c76c-48af-936e-52d2ef3eef6c",
+    "title": "t3",
+    "completed": true
   }
 ]

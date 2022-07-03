@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { ErrorInfo } from 'remult';
 import { remult } from '../src/common';
 import { Task } from '../src/shared/Task';
+import { TasksController } from '../src/shared/TasksController';
 
 import { HiddenLabel } from '../src/components/common';
 
@@ -77,10 +78,7 @@ const Home: NextPage = () => {
   };
 
   const setAll = async (completed: boolean) => {
-    for (const task of await taskRepo.find()) {
-      await taskRepo.save({ ...task, completed });
-    }
-
+    await TasksController.setAll(completed);
     await fetchTasks(hideCompleted);
   };
 
