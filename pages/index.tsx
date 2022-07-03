@@ -2,8 +2,7 @@ import type { NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
 import { ErrorInfo } from 'remult';
 import { remult } from '../src/common';
-import { Task } from '../src/shared/Task';
-import { TasksController } from '../src/shared/TasksController';
+import { Task, TasksController } from "../src/shared";
 
 import { HiddenLabel } from '../src/components/common';
 

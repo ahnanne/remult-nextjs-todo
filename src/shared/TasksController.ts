@@ -1,7 +1,7 @@
 import { BackendMethod, Remult } from "remult";
-import { Task } from "./Task";
+import Task from "./Task";
 
-export class TasksController {
+export default class TasksController {
   @BackendMethod({ allowed: true })
   static async setAll(completed: boolean, remult?: Remult) {
     // 이때 두번째 매개변수 remult는, 프론트 단에서 호출되는 시점에는 생략됨.

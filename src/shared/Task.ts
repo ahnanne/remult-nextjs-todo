@@ -6,7 +6,7 @@ import { Entity, Fields, Validators } from 'remult';
 @Entity("tasks", {
   allowApiCrud: true // CRUD 모두 허용하기 위해 설정
 })
-export class Task {
+export default class Task {
   @Fields.uuid()
     id!: string; // 옵셔널
 
