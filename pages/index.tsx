@@ -15,7 +15,7 @@ const Home: NextPage = () => {
   const fetchTasks = async (hideCompleted: boolean) => {
     try {
       // https://remult.dev/docs/ref_repository.html#find
-      const data = await taskRepo.find({
+      const data = taskRepo.metadata.apiReadAllowed ? await taskRepo.find({
         limit: 20, // 페이징
         orderBy: { // 정렬
           completed: 'asc'
@@ -23,7 +23,7 @@ const Home: NextPage = () => {
         where: { // 필터링
           completed: hideCompleted ? false : undefined
         }
-      });
+      }) : [];
       setTasks(data);
     } catch (e) {
       handleError(e);
